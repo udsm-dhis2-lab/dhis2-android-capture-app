@@ -8,6 +8,11 @@ ext {
     ]
 
     libraries = [
+            flipper                   : "0.72.0",
+            flippernoop               : "0.72.0",
+            soloader                  : "0.9.0",
+            flippernetwork            : "0.72.0",
+            flipperleak               : "0.72.0",
             support          : "28.0.0",
             multidex         : "2.0.1",
             constraintlayout : "1.1.3",

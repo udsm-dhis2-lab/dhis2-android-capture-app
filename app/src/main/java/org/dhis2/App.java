@@ -115,13 +115,15 @@ public class App extends MultiDexApplication implements Components, LifecycleObs
     private boolean recreated;
     private Tracker matomoTracker;
 
+    private AppInspector appInspector;
+
     @Override
     public void onCreate() {
         super.onCreate();
 
         Timber.plant(BuildConfig.DEBUG ? new DebugTree() : new ReleaseTree());
         ProcessLifecycleOwner.get().getLifecycle().addObserver(this);
-
+        appInspector = new AppInspector(this).init();
         if (BuildConfig.DEBUG)
             Stetho.initializeWithDefaults(this);
 
@@ -143,7 +145,15 @@ public class App extends MultiDexApplication implements Components, LifecycleObs
         if (getTracker() != null) {
             TrackHelper.track().download().identifier(new DownloadTracker.Extra.ApkChecksum(this)).with(getTracker());
         }
+
+
     }
+
+
+    public AppInspector getAppInspector() {
+        return appInspector;
+    }
+
 
     private void initCustomCrashActivity() {
         CaocConfig.Builder.create()

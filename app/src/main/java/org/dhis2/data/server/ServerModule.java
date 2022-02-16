@@ -2,6 +2,8 @@ package org.dhis2.data.server;
 
 import android.content.Context;
 
+import com.facebook.flipper.plugins.network.FlipperOkhttpInterceptor;
+import com.facebook.flipper.plugins.network.NetworkFlipperPlugin;
 import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
@@ -29,6 +31,7 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import okhttp3.Interceptor;
+import okhttp3.OkHttpClient;
 
 @Module
 @PerServer
@@ -55,6 +58,16 @@ public class ServerModule {
     public static D2Configuration getD2Configuration(Context context) {
         List<Interceptor> interceptors = new ArrayList<>();
         Tracker matomoTracker = ((App) context).getTracker();
+
+
+       FlipperOkhttpInterceptor flipper =  ((App)context.getApplicationContext()).getAppInspector().getFlipperInterceptor();
+       if (flipper != null) {
+           interceptors.add(flipper);
+       }
+       //  NetworkFlipperPlugin networkFlipperPlugin = new NetworkFlipperPlugin();
+      //  interceptors.add(new FlipperOkhttpInterceptor(networkFlipperPlugin));
+
+
         interceptors.add(new StethoInterceptor());
         interceptors.add(new AnalyticsInterceptor(
                 new AnalyticsHelper(FirebaseAnalytics.getInstance(context),
