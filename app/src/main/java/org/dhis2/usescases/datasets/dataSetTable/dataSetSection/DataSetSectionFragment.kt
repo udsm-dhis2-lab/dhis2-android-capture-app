@@ -18,12 +18,12 @@ import androidx.lifecycle.MutableLiveData
 import com.evrencoskun.tableview.TableView
 import com.evrencoskun.tableview.adapter.recyclerview.CellRecyclerView
 import com.google.android.material.composethemeadapter.MdcTheme
-import java.util.SortedMap
-import javax.inject.Inject
 import org.dhis2.Bindings.calculateWidth
 import org.dhis2.Bindings.dp
 import org.dhis2.Bindings.measureText
 import org.dhis2.R
+import org.dhis2.commons.featureconfig.data.FeatureConfigRepository
+import org.dhis2.commons.featureconfig.model.Feature.ANDROAPP_4754
 import org.dhis2.compose_table.ui.TableList
 import org.dhis2.data.forms.dataentry.tablefields.RowAction
 import org.dhis2.databinding.FragmentDatasetSectionBinding
@@ -34,6 +34,8 @@ import org.dhis2.utils.Constants.ACCESS_DATA
 import org.dhis2.utils.Constants.DATA_SET_SECTION
 import org.dhis2.utils.Constants.DATA_SET_UID
 import org.dhis2.utils.isPortrait
+import java.util.SortedMap
+import javax.inject.Inject
 
 const val ARG_ORG_UNIT = "ARG_ORG_UNIT"
 const val ARG_PERIOD_ID = "ARG_PERIOD_ID"
@@ -49,6 +51,9 @@ class DataSetSectionFragment : FragmentGlobalAbstract(), DataValueContract.View 
 
     @Inject
     lateinit var presenterFragment: DataValuePresenter
+
+    @Inject
+    lateinit var featureConfigRepository: FeatureConfigRepository
 
     private var heights = ArrayList<Int>()
     private val currentTablePosition = MutableLiveData<Int>()
@@ -91,10 +96,15 @@ class DataSetSectionFragment : FragmentGlobalAbstract(), DataValueContract.View 
         return FragmentDatasetSectionBinding.inflate(inflater, container, false)
             .also {
                 binding = it
-                binding.tables.setContent {
-                    MdcTheme {
-                        val tableData by presenterFragment.tableData().observeAsState(emptyList())
-                        TableList(tableData)
+                if (featureConfigRepository.isFeatureEnable(ANDROAPP_4754)) {
+                    binding.tables.setContent {
+                        MdcTheme {
+                            val tableData by presenterFragment.tableData()
+                                .observeAsState(emptyList())
+                            TableList(
+                                tableData
+                            ) { cell -> presenterFragment.onValueChange(cell) }
+                        }
                     }
                 }
             }
@@ -197,10 +207,10 @@ class DataSetSectionFragment : FragmentGlobalAbstract(), DataValueContract.View 
         )
 
         binding.scroll.setOnScrollChangeListener { _: NestedScrollView?,
-            _: Int,
-            scrollY: Int,
-            _: Int,
-            _: Int ->
+                                                   _: Int,
+                                                   scrollY: Int,
+                                                   _: Int,
+                                                   _: Int ->
             var position = -1
             if (checkTableHeights()) {
                 for (i in heights.indices) {
@@ -274,7 +284,7 @@ class DataSetSectionFragment : FragmentGlobalAbstract(), DataValueContract.View 
             if (binding.headerContainer.childCount > 1) {
                 cornerView.top =
                     (binding.headerContainer.childCount - 2) *
-                    binding.headerContainer.getChildAt(0).layoutParams.height
+                        binding.headerContainer.getChildAt(0).layoutParams.height
             }
 
             val buttonAddWidth = cornerView.findViewById<View>(R.id.buttonRowScaleAdd)

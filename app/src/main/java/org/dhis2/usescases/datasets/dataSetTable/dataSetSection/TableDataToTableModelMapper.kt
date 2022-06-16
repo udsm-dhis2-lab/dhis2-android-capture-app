@@ -1,11 +1,11 @@
 package org.dhis2.usescases.datasets.dataSetTable.dataSetSection
 
-import java.util.SortedMap
+import org.dhis2.compose_table.model.TableCell
 import org.dhis2.compose_table.model.TableHeader
-import org.dhis2.compose_table.model.TableHeaderCell
 import org.dhis2.compose_table.model.TableHeaderRow
 import org.dhis2.compose_table.model.TableModel
 import org.dhis2.compose_table.model.TableRowModel
+import java.util.SortedMap
 
 class TableDataToTableModelMapper {
     fun map(tableData: TableData): TableModel {
@@ -15,23 +15,29 @@ class TableDataToTableModelMapper {
                     cells = catOptions.distinctBy { it.uid() }
                         .filter { it.uid() != null && it.uid().isNotEmpty() }
                         .map { categoryOption ->
-                            TableHeaderCell(categoryOption.displayName()!!)
+                            TableCell(value = categoryOption.displayName()!!)
                         }
                 )
             } ?: emptyList(),
             hasTotals = tableData.showRowTotals
         )
 
-        val tableRows = tableData.rows()?.mapIndexed { index, dataElement ->
+        val tableRows = tableData.rows()?.mapIndexed { rowIndex, dataElement ->
             TableRowModel(
                 rowHeader = dataElement.displayName()!!,
-                values = tableData.cells[index].mapIndexed { columnIndex, s ->
-                    columnIndex to TableHeaderCell(s)
+                values = tableData.fieldViewModels[rowIndex].mapIndexed { columnIndex, field ->
+                    columnIndex to TableCell(
+                        id = field.uid(),
+                        row = rowIndex,
+                        column = columnIndex,
+                        value = field.value()
+                    )
                 }.toMap()
             )
         } ?: emptyList()
 
         return TableModel(
+            id = tableData.catCombo()?.uid(),
             tableHeaderModel = tableHeader,
             tableRows = tableRows
         )
@@ -42,7 +48,7 @@ class TableDataToTableModelMapper {
             rows = listOf(
                 TableHeaderRow(
                     cells = listOf(
-                        TableHeaderCell("Value")
+                        TableCell(value = "Value")
                     )
                 )
             )
@@ -51,7 +57,7 @@ class TableDataToTableModelMapper {
         val tableRows = tableData.map { (indicatorName, indicatorValue) ->
             TableRowModel(
                 rowHeader = indicatorName!!,
-                values = mapOf(Pair(0, TableHeaderCell(indicatorValue)))
+                values = mapOf(Pair(0, TableCell(value = indicatorValue)))
             )
         }
 

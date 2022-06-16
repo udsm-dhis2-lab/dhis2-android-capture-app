@@ -4,6 +4,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 data class TableModel(
+    val id: String? = null,
     val tableHeaderModel: TableHeader,
     val tableRows: List<TableRowModel>
 )
@@ -27,9 +28,14 @@ data class TableHeader(val rows: List<TableHeaderRow>, val hasTotals: Boolean = 
     }
 }
 
-data class TableHeaderRow(val cells: List<TableHeaderCell>)
-data class TableHeaderCell(val value: String)
+data class TableHeaderRow(val cells: List<TableCell>)
+data class TableCell(
+    val id: String? = null,
+    val row: Int? = null,
+    val column: Int? = null,
+    val value: String?
+)
 
-data class TableRowModel(val rowHeader: String, val values: Map<Int, TableHeaderCell>) {
+data class TableRowModel(val rowHeader: String, val values: Map<Int, TableCell>) {
     val defaultWidth = 100.dp
 }
