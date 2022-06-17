@@ -485,6 +485,11 @@ class DataValueRepository(
         return inputPeriodModel
     }
 
+    fun getDataTableModel(categoryComboUid: String): Observable<DataTableModel> {
+        val categoryCombo = d2.categoryModule().categoryCombos().uid(categoryComboUid).blockingGet()
+        return getDataTableModel(categoryCombo)
+    }
+
     fun getDataTableModel(categoryCombo: CategoryCombo): Observable<DataTableModel> {
         return Flowable.zip<List<DataElement>,
             Map<String, List<List<Pair<CategoryOption, Category>>>>,
@@ -916,5 +921,12 @@ class DataValueRepository(
         }
 
         return editable
+    }
+
+    fun getDataElement(dataElementUid: String): DataElement {
+        return d2.dataElementModule()
+            .dataElements()
+            .uid(dataElementUid)
+            .blockingGet()
     }
 }

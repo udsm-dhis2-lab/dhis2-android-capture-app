@@ -1,26 +1,32 @@
 package org.dhis2.compose_table.ui
 
-import androidx.compose.foundation.*
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.ScrollState
+import androidx.compose.foundation.background
+import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import kotlinx.coroutines.launch
+import org.dhis2.compose_table.model.TableCell
 import org.dhis2.compose_table.model.TableHeader
-import org.dhis2.compose_table.model.TableHeaderCell
 import org.dhis2.compose_table.model.TableModel
 import org.dhis2.compose_table.model.TableRowModel
 
@@ -50,10 +56,10 @@ fun TableHeader(
                 }
             }
         }
-        if(tableHeaderModel.hasTotals){
+        if (tableHeaderModel.hasTotals) {
             HeaderCell(
                 columnIndex = tableHeaderModel.rows.size,
-                headerCell = TableHeaderCell("Total"),
+                headerCell = TableCell(value = "Total"),
                 headerWidth = tableHeaderModel.defaultCellWidth
             )
         }
@@ -61,7 +67,7 @@ fun TableHeader(
 }
 
 @Composable
-fun HeaderCell(columnIndex: Int, headerCell: TableHeaderCell, headerWidth: Dp) {
+fun HeaderCell(columnIndex: Int, headerCell: TableCell, headerWidth: Dp) {
     Text(
         modifier = Modifier
             .width(headerWidth)
@@ -72,7 +78,7 @@ fun HeaderCell(columnIndex: Int, headerCell: TableHeaderCell, headerWidth: Dp) {
                     Color.LightGray
                 }
             ),
-        text = headerCell.value
+        text = headerCell.value ?: ""
     )
 }
 
@@ -96,7 +102,8 @@ fun TableItemRow(
     tableModel: TableModel,
     horizontalScrollState: ScrollState,
     dataElementLabel: String,
-    dataElementValues: Map<Int, TableHeaderCell>
+    dataElementValues: Map<Int, TableCell>,
+    onValueChange: (TableCell) -> Unit
 ) {
     Row {
         ItemHeader(dataElementLabel)
@@ -105,7 +112,8 @@ fun TableItemRow(
             columnCount = tableHeaderModel.tableMaxColumns(),
             cellValues = dataElementValues,
             defaultHeight = tableModel.tableHeaderModel.defaultCellHeight,
-            defaultWidth = tableModel.tableHeaderModel.defaultCellWidth
+            defaultWidth = tableModel.tableHeaderModel.defaultCellWidth,
+            onValueChange = onValueChange
         )
     }
 }
@@ -133,9 +141,10 @@ fun ItemHeader(dataElementLabel: String) {
 fun ItemValues(
     horizontalScrollState: ScrollState,
     columnCount: Int,
-    cellValues: Map<Int, TableHeaderCell>,
+    cellValues: Map<Int, TableCell>,
     defaultHeight: Dp,
-    defaultWidth: Dp
+    defaultWidth: Dp,
+    onValueChange: (TableCell) -> Unit
 ) {
     val focusRequester = LocalFocusManager.current
     val coroutineScope = rememberCoroutineScope()
@@ -149,13 +158,14 @@ fun ItemValues(
                 modifier = Modifier
                     .width(defaultWidth)
                     .height(defaultHeight),
-                cellValue = cellValues[columnIndex]?.value ?: "",
+                cell = cellValues[columnIndex] ?: TableCell(value = ""),
                 focusRequester = focusRequester,
                 onNext = {
                     coroutineScope.launch {
                         horizontalScrollState.scrollTo((columnIndex + 1) * defaultWidthPx.toInt())
                     }
-                }
+                },
+                onValueChange = onValueChange
             )
         })
     }
@@ -164,24 +174,17 @@ fun ItemValues(
 @Composable
 fun TableCell(
     modifier: Modifier,
-    cellValue: String,
+    cell: TableCell,
     focusRequester: FocusManager,
-    onNext: () -> Unit
+    onNext: () -> Unit,
+    onValueChange: (TableCell) -> Unit
 ) {
-    var value by remember { mutableStateOf(cellValue) }
-    BasicTextField(
+    ClickableText(
         modifier = modifier,
-        value = value,
-        onValueChange = { newValue ->
-            value = newValue
-        },
-        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
-        keyboardActions = KeyboardActions(onNext = {
-            onNext()
-            focusRequester.moveFocus(
-                FocusDirection.Right
-            )
-        })
+        text = AnnotatedString(cell.value ?: ""),
+        onClick = {
+            onValueChange(cell)
+        }
     )
 }
 
@@ -189,21 +192,21 @@ private val tableHeaderModel = TableHeader(
     rows = listOf(
         org.dhis2.compose_table.model.TableHeaderRow(
             cells = listOf(
-                TableHeaderCell("<18"),
-                TableHeaderCell(">18 <65"),
-                TableHeaderCell(">65")
+                TableCell(value = "<18"),
+                TableCell(value = ">18 <65"),
+                TableCell(value = ">65")
             )
         ),
         org.dhis2.compose_table.model.TableHeaderRow(
             cells = listOf(
-                TableHeaderCell("Male"),
-                TableHeaderCell("Female")
+                TableCell(value = "Male"),
+                TableCell(value = "Female")
             )
         ),
         org.dhis2.compose_table.model.TableHeaderRow(
             cells = listOf(
-                TableHeaderCell("Fixed"),
-                TableHeaderCell("Outreach"),
+                TableCell(value = "Fixed"),
+                TableCell(value = "Outreach"),
             )
         ),
     ),
@@ -213,19 +216,22 @@ private val tableHeaderModel = TableHeader(
 private val tableRows = TableRowModel(
     rowHeader = "Data Element",
     values = mapOf(
-        Pair(2, TableHeaderCell("12")),
-        Pair(4, TableHeaderCell("55"))
+        Pair(2, TableCell(value = "12")),
+        Pair(4, TableCell(value = "55"))
     )
 )
 
 private val tableModel = TableModel(
-    tableHeaderModel,
-    listOf(tableRows, tableRows, tableRows, tableRows)
+    tableHeaderModel = tableHeaderModel,
+    tableRows = listOf(tableRows, tableRows, tableRows, tableRows)
 )
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun TableList(tableList:List<TableModel>){
+fun TableList(
+    tableList: List<TableModel>,
+    onCellChange: (TableCell) -> Unit
+) {
     val horizontalScrollStates = tableList.map { rememberScrollState() }
     LazyColumn {
         tableList.forEachIndexed { index, currentTableModel ->
@@ -240,17 +246,17 @@ fun TableList(tableList:List<TableModel>){
                     tableModel = tableModel,
                     horizontalScrollState = horizontalScrollStates[index],
                     dataElementLabel = tableRowModel.rowHeader,
-                    dataElementValues = tableRowModel.values
+                    dataElementValues = tableRowModel.values,
+                    onValueChange = onCellChange
                 )
             }
         }
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Preview
 @Composable
 fun TableListPreview() {
     val tableList = listOf(tableModel, tableModel, tableModel, tableModel, tableModel, tableModel)
-    TableList(tableList)
+    TableList(tableList) {}
 }
