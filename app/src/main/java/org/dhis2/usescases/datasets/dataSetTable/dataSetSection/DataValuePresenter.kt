@@ -11,7 +11,7 @@ import org.dhis2.commons.data.tuples.Trio
 import org.dhis2.commons.featureconfig.data.FeatureConfigRepository
 import org.dhis2.commons.featureconfig.model.Feature.ANDROAPP_4754
 import org.dhis2.commons.schedulers.SchedulerProvider
-import org.dhis2.compose_table.model.TableCell
+import org.dhis2.composetable.model.TableCell
 import org.dhis2.composetable.model.TableModel
 import org.dhis2.data.forms.dataentry.ValueStore
 import org.dhis2.data.forms.dataentry.tablefields.RowAction
@@ -235,7 +235,7 @@ class DataValuePresenter(
 
     fun tableData(): LiveData<List<TableModel>> = allTableState
     fun isComposeTableEnable(): Boolean {
-        return featureConfigRepository?.isFeatureEnable(Feature.ANDROAPP_4754) == true
+        return featureConfigRepository?.isFeatureEnable(ANDROAPP_4754) == true
     }
 
     fun onCellClick(cell: TableCell) {

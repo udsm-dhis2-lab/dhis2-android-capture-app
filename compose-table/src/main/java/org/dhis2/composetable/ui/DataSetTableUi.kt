@@ -12,15 +12,10 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.graphics.Color
@@ -172,9 +167,9 @@ fun ItemValues(
                             horizontalScrollState.scrollTo(
                                 (columnIndex + 1) * defaultWidthPx.toInt()
                             )
-                        },
-                onValueChange = onValueChange
-                    }
+                        }
+                    },
+                    onValueChange = onValueChange
                 )
             }
         )

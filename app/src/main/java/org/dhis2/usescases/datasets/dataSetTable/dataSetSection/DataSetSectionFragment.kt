@@ -31,9 +31,7 @@ import org.dhis2.R
 import org.dhis2.commons.dialogs.DialogClickListener
 import org.dhis2.commons.dialogs.calendarpicker.CalendarPicker
 import org.dhis2.commons.dialogs.calendarpicker.OnDatePickerListener
-import org.dhis2.commons.featureconfig.data.FeatureConfigRepository
-import org.dhis2.commons.featureconfig.model.Feature.ANDROAPP_4754
-import org.dhis2.compose_table.model.TableCell
+import org.dhis2.composetable.model.TableCell
 import org.dhis2.composetable.ui.TableList
 import org.dhis2.data.forms.dataentry.tablefields.RowAction
 import org.dhis2.data.forms.dataentry.tablefields.radiobutton.YesNoView
@@ -70,9 +68,6 @@ class DataSetSectionFragment : FragmentGlobalAbstract(), DataValueContract.View 
 
     @Inject
     lateinit var presenterFragment: DataValuePresenter
-
-    @Inject
-    lateinit var featureConfigRepository: FeatureConfigRepository
 
     private var heights = ArrayList<Int>()
     private val currentTablePosition = MutableLiveData<Int>()
@@ -115,7 +110,7 @@ class DataSetSectionFragment : FragmentGlobalAbstract(), DataValueContract.View 
         return FragmentDatasetSectionBinding.inflate(inflater, container, false)
             .also {
                 binding = it
-                if (featureConfigRepository.isFeatureEnable(ANDROAPP_4754)) {
+                if (presenterFragment.isComposeTableEnable()) {
                     binding.tables.setContent {
                         MdcTheme {
                             val tableData by presenterFragment.tableData()
