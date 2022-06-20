@@ -2,11 +2,11 @@ package org.dhis2.usescases.datasets.dataSetTable.dataSetSection
 
 import org.dhis2.R
 import org.dhis2.commons.resources.ResourceManager
-import org.dhis2.compose_table.model.TableCell
-import org.dhis2.compose_table.model.TableHeader
-import org.dhis2.compose_table.model.TableHeaderRow
-import org.dhis2.compose_table.model.TableModel
-import org.dhis2.compose_table.model.TableRowModel
+import org.dhis2.composetable.model.TableCell
+import org.dhis2.composetable.model.TableHeader
+import org.dhis2.composetable.model.TableHeaderRow
+import org.dhis2.composetable.model.TableModel
+import org.dhis2.composetable.model.TableRowModel
 import org.dhis2.data.forms.dataentry.tablefields.FieldViewModel
 import org.hisp.dhis.android.core.common.ValueType
 import org.hisp.dhis.android.core.dataelement.DataElement
