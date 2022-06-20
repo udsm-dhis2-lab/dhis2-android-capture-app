@@ -1,13 +1,18 @@
 package org.dhis2.usescases.datasets.dataSetTable.dataSetSection
 
+import org.dhis2.R
+import org.dhis2.commons.resources.ResourceManager
 import org.dhis2.compose_table.model.TableCell
 import org.dhis2.compose_table.model.TableHeader
 import org.dhis2.compose_table.model.TableHeaderRow
 import org.dhis2.compose_table.model.TableModel
 import org.dhis2.compose_table.model.TableRowModel
+import org.dhis2.data.forms.dataentry.tablefields.FieldViewModel
+import org.hisp.dhis.android.core.common.ValueType
+import org.hisp.dhis.android.core.dataelement.DataElement
 import java.util.SortedMap
 
-class TableDataToTableModelMapper {
+class TableDataToTableModelMapper(val resources: ResourceManager) {
     fun map(tableData: TableData): TableModel {
         val tableHeader = TableHeader(
             rows = tableData.columnHeaders()?.map { catOptions ->
@@ -30,7 +35,7 @@ class TableDataToTableModelMapper {
                         id = field.uid(),
                         row = rowIndex,
                         column = columnIndex,
-                        value = field.value()
+                        value = mapFieldValueToUser(field, dataElement)
                     )
                 }.toMap()
             )
@@ -41,6 +46,24 @@ class TableDataToTableModelMapper {
             tableHeaderModel = tableHeader,
             tableRows = tableRows
         )
+    }
+
+    private fun mapFieldValueToUser(field: FieldViewModel, dataElement: DataElement): String? {
+        return when (dataElement.valueType()) {
+            ValueType.BOOLEAN,
+            ValueType.TRUE_ONLY -> {
+                if (!field.value().isNullOrEmpty()) {
+                    if (field.value().toBoolean()) {
+                        resources.getString(R.string.yes)
+                    } else {
+                        resources.getString(R.string.no)
+                    }
+                } else {
+                    field.value()
+                }
+            }
+            else -> field.value()
+        }
     }
 
     fun map(tableData: SortedMap<String?, String>): TableModel {

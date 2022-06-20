@@ -2,7 +2,7 @@ package org.dhis2.compose_table
 
 import androidx.compose.ui.unit.dp
 import org.dhis2.compose_table.model.TableHeader
-import org.dhis2.compose_table.model.TableHeaderCell
+import org.dhis2.compose_table.model.TableCell
 import org.dhis2.compose_table.model.TableHeaderRow
 import org.junit.Assert.assertTrue
 import org.junit.Ignore
@@ -14,21 +14,21 @@ class TableHeaderTest {
         rows = listOf(
             TableHeaderRow(
                 cells = listOf(
-                    TableHeaderCell("<18"),
-                    TableHeaderCell(">18 <65"),
-                    TableHeaderCell(">65")
+                    TableCell(value = "<18"),
+                    TableCell(value = ">18 <65"),
+                    TableCell(value = ">65")
                 )
             ),
             TableHeaderRow(
                 cells = listOf(
-                    TableHeaderCell("Male"),
-                    TableHeaderCell("Female")
+                    TableCell(value = "Male"),
+                    TableCell(value = "Female")
                 )
             ),
             TableHeaderRow(
                 cells = listOf(
-                    TableHeaderCell("Fixed"),
-                    TableHeaderCell("Outreach"),
+                    TableCell(value = "Fixed"),
+                    TableCell(value = "Outreach"),
                 )
             ),
         )
