@@ -68,7 +68,7 @@ fun TableHeader(
         if (tableHeaderModel.hasTotals) {
             HeaderCell(
                 columnIndex = tableHeaderModel.rows.size,
-                headerCell = TableCell(value = "Total",),
+                headerCell = TableCell(value = "Total"),
                 headerWidth = tableHeaderModel.defaultCellWidth
             )
         }
@@ -169,7 +169,7 @@ fun ItemValues(
                     modifier = Modifier
                         .width(defaultWidth)
                         .height(defaultHeight),
-                    cell = cellValues[columnIndex] ?: TableCell(value = "",),
+                    cell = cellValues[columnIndex] ?: TableCell(value = ""),
                     focusRequester = focusRequester,
                     onNext = {
                         coroutineScope.launch {
@@ -227,21 +227,21 @@ private val tableHeaderModel = TableHeader(
     rows = listOf(
         org.dhis2.composetable.model.TableHeaderRow(
             cells = listOf(
-                TableCell(value = "<18",),
-                TableCell(value = ">18 <65",),
-                TableCell(value = ">65",)
+                TableCell(value = "<18"),
+                TableCell(value = ">18 <65"),
+                TableCell(value = ">65")
             )
         ),
         org.dhis2.composetable.model.TableHeaderRow(
             cells = listOf(
-                TableCell(value = "Male",),
-                TableCell(value = "Female",)
+                TableCell(value = "Male"),
+                TableCell(value = "Female")
             )
         ),
         org.dhis2.composetable.model.TableHeaderRow(
             cells = listOf(
-                TableCell(value = "Fixed",),
-                TableCell(value = "Outreach",)
+                TableCell(value = "Fixed"),
+                TableCell(value = "Outreach")
             )
         )
     ),
@@ -251,8 +251,8 @@ private val tableHeaderModel = TableHeader(
 private val tableRows = TableRowModel(
     rowHeader = "Data Element",
     values = mapOf(
-        Pair(2, TableCell(value = "12",)),
-        Pair(4, TableCell(value = "55",))
+        Pair(2, TableCell(value = "12")),
+        Pair(4, TableCell(value = "55"))
     )
 )
 
