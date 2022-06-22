@@ -33,7 +33,8 @@ data class TableCell(
     val id: String? = null,
     val row: Int? = null,
     val column: Int? = null,
-    val value: String?
+    val value: String?,
+    val isReadOnly: Boolean = false
 )
 
 data class TableRowModel(val rowHeader: String, val values: Map<Int, TableCell>) {
