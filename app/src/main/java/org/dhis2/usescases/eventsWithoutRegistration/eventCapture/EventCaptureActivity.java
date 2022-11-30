@@ -121,8 +121,6 @@ public class EventCaptureActivity extends ActivityGlobalAbstract implements Even
 
         setUpViewPagerAdapter();
 
-        System.out.println("[[[[[[[[[[[[[[[[[[[[]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]");
-        System.out.println(binding.navigationBar.currentPage());
 
 //        if (binding.navigationBar.currentPage() != -1) {
 //            if (OrientationUtilsKt.isLandscape(this)) {
@@ -143,10 +141,8 @@ public class EventCaptureActivity extends ActivityGlobalAbstract implements Even
 //        }
 
         //        if (OrientationUtilsKt.isPortrait(this)) {
-//            System.out.println(binding.eventViewPager.getCurrentItem());
 //            binding.navigationBar.selectItemAt(binding.eventViewPager.getCurrentItem());
 //        } else {
-//            System.out.println(binding.eventViewLandPager.getCurrentItem());
 //            binding.navigationBar.selectItemAt(binding.eventViewLandPager.getCurrentItem());
 //        }
 
@@ -156,8 +152,6 @@ public class EventCaptureActivity extends ActivityGlobalAbstract implements Even
 //
 //            int pagePosition = adapter.getNavigationPagePosition(item.getItemId());
 //
-//            System.out.println("page position :::::::::::::: ");
-//            System.out.println(pagePosition);
 //
 //            if (pagePosition != -1) {
 //                if (OrientationUtilsKt.isLandscape(this)) {
@@ -194,9 +188,6 @@ public class EventCaptureActivity extends ActivityGlobalAbstract implements Even
             binding.eventViewLandPager.setUserInputEnabled(false);
             binding.eventViewLandPager.setAdapter(null);
 
-            System.out.println("landscape setting up page adapter");
-            System.out.println(binding.eventViewLandPager.getCurrentItem());
-            System.out.println(binding.navigationBar.currentPage());
 
             this.adapter = new EventCapturePagerAdapter(this, getIntent().getStringExtra(PROGRAM_UID), getIntent().getStringExtra(Constants.EVENT_UID), pageConfigurator.displayAnalytics(), pageConfigurator.displayRelationships(), false);
 
@@ -231,9 +222,6 @@ public class EventCaptureActivity extends ActivityGlobalAbstract implements Even
             binding.eventViewPager.setUserInputEnabled(false);
             binding.eventViewPager.setAdapter(null);
 
-            System.out.println("potrait setting up page adapter");
-            System.out.println(binding.eventViewPager.getCurrentItem());
-            System.out.println(binding.navigationBar.currentPage());
 
             this.adapter = new EventCapturePagerAdapter(this, getIntent().getStringExtra(PROGRAM_UID), getIntent().getStringExtra(Constants.EVENT_UID), pageConfigurator.displayAnalytics(), pageConfigurator.displayRelationships(), true);
 

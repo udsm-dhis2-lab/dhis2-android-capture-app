@@ -1,0 +1,25 @@
+-- Merging decision tree log ---
+manifest
+ADDED from /home/jesse-justin/workspace/dhis/dhis2-android-capture-app/ui-components/src/main/AndroidManifest.xml:2:1-5:12
+INJECTED from /home/jesse-justin/workspace/dhis/dhis2-android-capture-app/ui-components/src/main/AndroidManifest.xml:2:1-5:12
+INJECTED from /home/jesse-justin/workspace/dhis/dhis2-android-capture-app/ui-components/src/main/AndroidManifest.xml:2:1-5:12
+	package
+		ADDED from /home/jesse-justin/workspace/dhis/dhis2-android-capture-app/ui-components/src/main/AndroidManifest.xml:3:5-27
+		INJECTED from /home/jesse-justin/workspace/dhis/dhis2-android-capture-app/ui-components/src/main/AndroidManifest.xml
+		INJECTED from /home/jesse-justin/workspace/dhis/dhis2-android-capture-app/ui-components/src/main/AndroidManifest.xml
+	xmlns:android
+		ADDED from /home/jesse-justin/workspace/dhis/dhis2-android-capture-app/ui-components/src/main/AndroidManifest.xml:2:11-69
+uses-sdk
+INJECTED from /home/jesse-justin/workspace/dhis/dhis2-android-capture-app/ui-components/src/main/AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from /home/jesse-justin/workspace/dhis/dhis2-android-capture-app/ui-components/src/main/AndroidManifest.xml
+INJECTED from /home/jesse-justin/workspace/dhis/dhis2-android-capture-app/ui-components/src/main/AndroidManifest.xml
+INJECTED from /home/jesse-justin/workspace/dhis/dhis2-android-capture-app/ui-components/src/main/AndroidManifest.xml
+INJECTED from /home/jesse-justin/workspace/dhis/dhis2-android-capture-app/ui-components/src/main/AndroidManifest.xml
+	android:targetSdkVersion
+		INJECTED from /home/jesse-justin/workspace/dhis/dhis2-android-capture-app/ui-components/src/main/AndroidManifest.xml
+		ADDED from /home/jesse-justin/workspace/dhis/dhis2-android-capture-app/ui-components/src/main/AndroidManifest.xml
+		INJECTED from /home/jesse-justin/workspace/dhis/dhis2-android-capture-app/ui-components/src/main/AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from /home/jesse-justin/workspace/dhis/dhis2-android-capture-app/ui-components/src/main/AndroidManifest.xml
+		ADDED from /home/jesse-justin/workspace/dhis/dhis2-android-capture-app/ui-components/src/main/AndroidManifest.xml
+		INJECTED from /home/jesse-justin/workspace/dhis/dhis2-android-capture-app/ui-components/src/main/AndroidManifest.xml

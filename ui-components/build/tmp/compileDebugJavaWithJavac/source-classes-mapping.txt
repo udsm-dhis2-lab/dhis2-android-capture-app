@@ -1,0 +1,2 @@
+org/dhis2/ui/BuildConfig.java
+ org.dhis2.ui.BuildConfig

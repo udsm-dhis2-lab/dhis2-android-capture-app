@@ -89,9 +89,7 @@ class IndicatorsFragment : FragmentGlobalAbstract(), IndicatorsView {
     }
 
     override fun swapAnalytics(analytics: List<AnalyticsModel>) {
-        System.out.println("there thrtrtrtrtrtrtrt :::::::::::::::::::::::: ");
-        System.out.println(analytics.size);
-
+ 
         adapter.submitList(analytics)
         binding.spinner.visibility = View.GONE
 
