@@ -45,7 +45,8 @@ fun DetailsButton(
         )
         Text(
             text = stringResource(id = R.string.open_details)
-                .format(trackedEntityName),
+                .format(trackedEntityName)
+                .toUpperCase(Locale.current),
             fontSize = 12.sp,
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colors.primary,
@@ -58,16 +59,11 @@ fun ComposeView?.setButtonContent(
     trackedEntityName: String,
     onButtonClicked: () -> Unit
 ) {
-
-    System.out.println("seting details button");
-    System.out.println(trackedEntityName);
-    System.out.println(onButtonClicked);
-
     this?.setContent {
         MdcTheme {
             DetailsButton(
                 trackedEntityName = trackedEntityName,
-                onButtonClicked = onButtonClicked
+                onButtonClicked = onButtonClicked,
             )
         }
     }

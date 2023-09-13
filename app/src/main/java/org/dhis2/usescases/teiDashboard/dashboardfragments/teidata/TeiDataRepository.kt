@@ -11,7 +11,6 @@ import org.hisp.dhis.android.core.event.EventStatus
 import org.hisp.dhis.android.core.organisationunit.OrganisationUnit
 import org.hisp.dhis.android.core.period.DatePeriod
 import org.hisp.dhis.android.core.program.Program
-import org.hisp.dhis.android.core.trackedentity.TrackedEntityAttributeValue
 import org.hisp.dhis.android.core.trackedentity.TrackedEntityInstance
 
 interface TeiDataRepository {
@@ -24,12 +23,13 @@ interface TeiDataRepository {
         assignedToMe: Boolean,
         eventStatusFilters: MutableList<EventStatus>,
         catOptComboFilters: MutableList<CategoryOptionCombo>,
-        sortingItem: SortingItem?
+        sortingItem: SortingItem?,
     ): Single<List<EventViewModel>>
 
-    fun getEnrollment(): Single<Enrollment>
-    fun getEnrollmentProgram(): Single<Program>
-    fun getTrackedEntityInstance(): Single<TrackedEntityInstance>
-    fun getAttributeValues(teiUid :String): List<TrackedEntityAttributeValue>
+    fun getEnrollment(): Single<Enrollment?>
+    fun getEnrollmentProgram(): Single<Program?>
+    fun getTrackedEntityInstance(): Single<TrackedEntityInstance?>
     fun enrollingOrgUnit(): Single<OrganisationUnit>
+    fun eventsWithoutCatCombo(): Single<List<EventViewModel>>
+    fun getOrgUnitName(orgUnitUid: String): String
 }

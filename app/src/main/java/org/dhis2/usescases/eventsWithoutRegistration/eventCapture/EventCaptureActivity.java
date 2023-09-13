@@ -500,7 +500,16 @@ public class EventCaptureActivity extends ActivityGlobalAbstract implements Even
 
     @Override
     public void showEventIntegrityAlert() {
-        new MaterialAlertDialogBuilder(this, R.style.DhisMaterialDialog).setTitle(R.string.conflict).setMessage(R.string.event_date_in_future_message).setPositiveButton(R.string.change_event_date, (dialogInterface, i) -> binding.navigationBar.selectItemAt(0)).setNegativeButton(R.string.go_back, (dialogInterface, i) -> back()).setCancelable(false).show();
+        new MaterialAlertDialogBuilder(this, R.style.DhisMaterialDialog)
+                .setTitle(R.string.conflict)
+                .setMessage(R.string.event_date_in_future_message)
+                .setPositiveButton(
+                        R.string.change_event_date,
+                        (dialogInterface, i) -> binding.navigationBar.selectItemAt(0)
+                )
+                .setNegativeButton(R.string.go_back, (dialogInterface, i) -> back())
+                .setCancelable(false)
+                .show();
     }
 
     @Override
@@ -515,7 +524,10 @@ public class EventCaptureActivity extends ActivityGlobalAbstract implements Even
 
     @Override
     public void hideProgress() {
-        new Handler(Looper.getMainLooper()).postDelayed(() -> runOnUiThread(binding.toolbarProgress::hide), 1000);
+        new Handler(Looper.getMainLooper()).postDelayed(() ->
+                        runOnUiThread(() ->
+                                binding.toolbarProgress.hide()),
+                1000);
     }
 
     @Override
@@ -524,17 +536,8 @@ public class EventCaptureActivity extends ActivityGlobalAbstract implements Even
     }
 
     @Override
-    public void setData(DashboardProgramModel program) {
-
-    }
-
-    @Override
     public void hideNavigationBar() {
-
-        if (OrientationUtilsKt.isPortrait(this)) {
-            binding.navigationBar.hide();
-        }
-
+        binding.navigationBar.hide();
     }
 
     @NotNull
@@ -559,8 +562,12 @@ public class EventCaptureActivity extends ActivityGlobalAbstract implements Even
     }
 
     private void showSyncDialog() {
-        SyncStatusDialog syncDialog = new SyncStatusDialog.Builder().setConflictType(ConflictType.EVENT).setUid(eventUid).onDismissListener(hasChanged -> {
-        }).build();
+        SyncStatusDialog syncDialog = new SyncStatusDialog.Builder()
+                .setConflictType(ConflictType.EVENT)
+                .setUid(eventUid)
+                .onDismissListener(hasChanged -> {
+                })
+                .build();
         syncDialog.show(getSupportFragmentManager(), "EVENT_SYNC");
     }
 }

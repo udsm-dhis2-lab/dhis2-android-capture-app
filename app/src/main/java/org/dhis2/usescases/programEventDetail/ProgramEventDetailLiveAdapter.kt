@@ -6,6 +6,7 @@ import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.AsyncDifferConfig
 import androidx.recyclerview.widget.DiffUtil
 import org.dhis2.commons.data.EventViewModel
+import org.dhis2.commons.resources.ColorUtils
 import org.dhis2.databinding.ItemEventBinding
 import org.dhis2.usescases.teiDashboard.dashboardfragments.teidata.teievents.EventViewHolder
 import org.hisp.dhis.android.core.program.Program
@@ -13,7 +14,8 @@ import org.hisp.dhis.android.core.program.Program
 class ProgramEventDetailLiveAdapter(
     private val program: Program,
     private val eventViewModel: ProgramEventDetailViewModel,
-    config: AsyncDifferConfig<EventViewModel>
+    private val colorUtils: ColorUtils,
+    config: AsyncDifferConfig<EventViewModel>,
 ) : PagedListAdapter<EventViewModel, EventViewHolder>(config) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EventViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -21,14 +23,14 @@ class ProgramEventDetailLiveAdapter(
         return EventViewHolder(
             binding,
             program,
-                null,
+            colorUtils,
             { eventUid ->
                 eventViewModel.eventSyncClicked.value = eventUid
             },
             { _, _ -> },
             { eventUid, orgUnitUid, _, _ ->
                 eventViewModel.eventClicked.value = Pair(eventUid, orgUnitUid)
-            }
+            },
         )
     }
 
@@ -44,14 +46,14 @@ class ProgramEventDetailLiveAdapter(
             get() = object : DiffUtil.ItemCallback<EventViewModel>() {
                 override fun areItemsTheSame(
                     oldItem: EventViewModel,
-                    newItem: EventViewModel
+                    newItem: EventViewModel,
                 ): Boolean {
                     return oldItem.event?.uid() == newItem.event?.uid()
                 }
 
                 override fun areContentsTheSame(
                     oldItem: EventViewModel,
-                    newItem: EventViewModel
+                    newItem: EventViewModel,
                 ): Boolean {
                     return oldItem == newItem
                 }

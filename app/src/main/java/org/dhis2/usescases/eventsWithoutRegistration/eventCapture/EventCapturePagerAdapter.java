@@ -19,6 +19,7 @@ import org.dhis2.usescases.teiDashboard.dashboardfragments.indicators.Indicators
 import org.dhis2.usescases.teiDashboard.dashboardfragments.indicators.VisualizationType;
 import org.dhis2.usescases.teiDashboard.dashboardfragments.relationships.RelationshipFragment;
 import org.dhis2.commons.Constants;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +36,12 @@ public class EventCapturePagerAdapter extends FragmentStateAdapter {
 
     private final List<EventPageType> pages;
     private EventCaptureFormFragment formFragment;
+
+    private final boolean shouldOpenErrorSection;
+
+    public boolean isFormScreenShown(@Nullable Integer currentItem) {
+        return currentItem!=null && pages.get(currentItem) == EventPageType.DATA_ENTRY;
+    }
 
     public int getNavigationPagePosition(int navigationId) {
 
@@ -70,6 +77,7 @@ public class EventCapturePagerAdapter extends FragmentStateAdapter {
                                     String eventUid,
                                     boolean displayAnalyticScreen,
                                     boolean displayRelationshipScreen,
+                                    boolean openErrorSection,
                                     boolean displayDataEntryScreen,
                                     String teiUid,
                                     String enrollmentUid
@@ -80,12 +88,10 @@ public class EventCapturePagerAdapter extends FragmentStateAdapter {
         this.eventUid = eventUid;
         this.enrollmentUid = enrollmentUid;
         this.teiUid = teiUid;
+        this.shouldOpenErrorSection = openErrorSection;
         pages = new ArrayList<>();
         pages.add(EventPageType.DETAILS);
-
-        if (displayDataEntryScreen) {
-            pages.add(EventPageType.DATA_ENTRY);
-        }
+        pages.add(EventPageType.DATA_ENTRY);
 
         if (displayAnalyticScreen) {
             pages.add(EventPageType.ANALYTICS);
@@ -98,8 +104,6 @@ public class EventCapturePagerAdapter extends FragmentStateAdapter {
     }
 
     public int getDynamicTabIndex(@IntegerRes int tabClicked) {
-
-
         if (tabClicked == R.id.navigation_details) {
             return pages.indexOf(EventPageType.DETAILS);
         } else if (tabClicked == R.id.navigation_data_entry) {
@@ -133,7 +137,7 @@ public class EventCapturePagerAdapter extends FragmentStateAdapter {
                 });
                 return eventDetailsFragment;
             case DATA_ENTRY:
-                formFragment = EventCaptureFormFragment.newInstance(eventUid);
+                formFragment = EventCaptureFormFragment.newInstance(eventUid, shouldOpenErrorSection);
                 return formFragment;
             case ANALYTICS:
                 Fragment indicatorFragment = new IndicatorsFragment();

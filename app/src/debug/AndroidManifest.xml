@@ -11,13 +11,12 @@
     <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
     <uses-permission android:name="android.permission.READ_SMS" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
     <uses-permission android:name="android.permission.USE_BIOMETRIC" />
 
 
     <uses-feature
-        android:name="android.hardware.sensor.accelerometer"
+        android:name="android.hardware.telephony"
         android:required="false" />
 
     <application
@@ -103,16 +102,6 @@
 
         <activity android:name=".usescases.sync.SyncActivity" />
         <activity android:name=".usescases.development.DevelopmentActivity" />
-
-        <service android:name=".usescases.sms.SmsSendingService" />
-
-        <activity android:name=".usescases.teiDashboard.nfcdata.NfcDataWriteActivity" />
-
-        <activity
-            android:name=".usescases.enrollment.EnrollmentActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:windowSoftInputMode="adjustPan|stateHidden" />
-        <activity android:name=".usescases.events.ScheduledEventActivity" />
 
         <service android:name="com.facebook.flipper.plugins.leakcanary.RecordLeakService" />
     </application>
