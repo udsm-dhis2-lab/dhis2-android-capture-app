@@ -13,7 +13,7 @@ android {
     compileSdk = libs.versions.sdk.get().toInt()
     namespace = "org.dhis2.form"
 
-    defaultConfig {
+     defaultConfig {
         minSdk = libs.versions.minSdk.get().toInt()
         targetSdk = libs.versions.sdk.get().toInt()
         vectorDrawables.useSupportLibrary = true

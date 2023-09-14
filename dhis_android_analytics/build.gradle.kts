@@ -14,7 +14,7 @@ android {
     compileSdk = libs.versions.sdk.get().toInt()
     namespace = "dhis2.org"
 
-    defaultConfig {
+     defaultConfig {
         minSdk = libs.versions.minSdk.get().toInt()
         targetSdk = libs.versions.sdk.get().toInt()
         vectorDrawables.useSupportLibrary = true
